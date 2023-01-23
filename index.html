@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recuento horas</title>
+    <link rel="stylesheet" href="styles.css">
+    Librería para leer archivos de Excel
+    <script src="https://unpkg.com/read-excel-file@4.1.0/bundle/read-excel-file.min.js"></script>
+  </head>
+
+  <body>
+
+    <main>
+        <div class="subir_excel">
+            <div>
+                <label for="excel">Seleccione un archivo Excel</label>
+                <input type="file" name="input" id="input">
+            </div>
+            <div>
+                <button class="boton" onclick="leerExcel()">Generar tabla</button>
+            </div>
+        </div>
+
+        <div id="tabla">
+        </div>
+    </main>
+
+    <script src="index.js"></script>
+  </body>
+</html>

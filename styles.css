@@ -1,0 +1,10 @@
+body {
+    width: 95%;
+}
+
+.subir_excel {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1000px;
+    margin: 30px auto;
+}
