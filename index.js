@@ -76,14 +76,13 @@ function crearCadena(registros) {
   var horasSalida = []
   var horasTotales = []
   var band = true
+  var band2 = true
 
   var conectados = []
 
   for (let i = 0; i < dias.length; i++) {
     cadena += `<h1>Día ${dias[i]} de enero de 2023</h1>`
-    cadena += `<table border="1"><tr><th></th><th>12 am</th><th>1 am</th><th>2 am</th><th>3 am</th><th>4 am</th><th>5 am</th><th>6 am</th><th>7 am</th><th>8 am</th><th>9 am</th><th>10 am</th><th>11 am</th><th>12 pm</th><th>1 pm</th><th>2 pm</th><th>3 pm</th><th>4 pm</th><th>5 pm</th><th>6 pm</th><th>7 pm</th><th>8 pm</th><th>9 pm</th><th>10 pm</th><th>11 pm</th></tr>`
-
-    console.log(conectados)
+    cadena += `<table border="1"><tr><th></th><th>12 am</th><th>1 am</th><th>2 am</th><th>3 am</th><th>4 am</th><th>5 am</th><th>6 am</th><th>7 am</th><th>8 am</th><th>9 am</th><th>10 am</th><th>11 am</th><th>12 pm</th><th>1 pm</th><th>2 pm</th><th>3 pm</th><th>4 pm</th><th>5 pm</th><th>6 pm</th><th>7 pm</th><th>8 pm</th><th>9 pm</th><th>10 pm</th><th>11 pm</th><th>Total</th><th>Se conectó</th></tr>`
 
     for (let j = 0; j < usuarios.length; j++) {
 
@@ -91,6 +90,8 @@ function crearCadena(registros) {
 
       horas = []
       horasSalida = []
+      band = true
+      band2 = true
 
       // Lo mismo pero revisando los dias de salida
       for (let k = 0; k < registros.length; k++) {
@@ -131,24 +132,43 @@ function crearCadena(registros) {
       }
 
       for (let k = 0; k < horasTotales.length; k++) {
-        if (horasTotales[k] === 1 && band) {
+        if (horasTotales[k] === 1 && band2) {
+          cadena += `<td bgcolor="lightblue"></td>`
+          band = false
+          band2 = false
+        }
+        else if (horasTotales[k] === 1 && band) {
           cadena += `<td bgcolor="lightblue">${horasTotales[k]}</td>`
           band = false
+          band2 = false
         } else if (horasTotales[k] === 1) {
           cadena += `<td bgcolor="lightblue"></td>`
+          band2 = false
         } else {
           cadena += `<td></td>`
           band = true
+          band2 = false
         }
       }
 
-      cadena += `</tr>`
+      let total = 0
+      let bandSeConecto = false
+      for (let k = 0; k < horasTotales.length; k++) {
+        if (horasTotales[k] === 1) {
+          total++
+        }
+      }
+
+      if (total > 0) {
+        cadena += `<td bgcolor="lightblue">${total}</td><td bgcolor="lightblue">Sí</td></tr>`
+      } else {
+        cadena += `<td></td><td></td></tr>`
+      }
+
     }
 
-    cadena += `</table>`
+    cadena += `<tr><th>Total</th><td></td></tr></table>`
   }
-
-  console.log(registros)
 
   tabla.innerHTML = cadena
 }
