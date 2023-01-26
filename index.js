@@ -73,39 +73,73 @@ function crearCadena(registros) {
   usuarios = result.sort()
 
   var horas = []
+  var horasSalida = []
   var horasTotales = []
+  var band = true
+
+  var conectados = []
 
   for (let i = 0; i < dias.length; i++) {
     cadena += `<h1>Día ${dias[i]} de enero de 2023</h1>`
     cadena += `<table border="1"><tr><th></th><th>12 am</th><th>1 am</th><th>2 am</th><th>3 am</th><th>4 am</th><th>5 am</th><th>6 am</th><th>7 am</th><th>8 am</th><th>9 am</th><th>10 am</th><th>11 am</th><th>12 pm</th><th>1 pm</th><th>2 pm</th><th>3 pm</th><th>4 pm</th><th>5 pm</th><th>6 pm</th><th>7 pm</th><th>8 pm</th><th>9 pm</th><th>10 pm</th><th>11 pm</th></tr>`
 
-    horas = []
-    
+    console.log(conectados)
+
     for (let j = 0; j < usuarios.length; j++) {
 
       cadena += `<tr><td>${usuarios[j]}</td>`
 
       horas = []
+      horasSalida = []
+
+      // Lo mismo pero revisando los dias de salida
+      for (let k = 0; k < registros.length; k++) {
+        if (dias[i] === registros[k][4] && usuarios[j] === registros[k][0]) {
+          if (registros[k][4] > registros[k][1]) {
+            horas.push("0")
+            horasSalida.push(registros[k][5])
+            conectados = conectados.filter(item => item != registros[k][0])
+          }
+        }
+      }
+
+      for (let k = 0; k < conectados.length; k++) {
+        if (usuarios[j] === conectados[k]) {
+          horas.push("0")
+          horasSalida.push("23")
+        }
+      }
 
       for (let k = 0; k < registros.length; k++) {
         if (dias[i] === registros[k][1] && usuarios[j] === registros[k][0]) {
-          horas.push(registros[k][2])
+          if (parseInt(registros[k][4]) > parseInt(registros[k][1])) {
+            horas.push(registros[k][2])
+            horasSalida.push("23")
+            conectados.push(registros[k][0])
+          } else if (registros[k][4] === registros[k][1]) {
+            horas.push(registros[k][2])
+            horasSalida.push(registros[k][5])
+          }
         }
       }
-      // Eliminando elementos duplicados
-      result = horas.filter((item, index) => {
-        return horas.indexOf(item) === index;
-      })
-      horas = result.sort()
-      console.log(horas)
 
-      horasTotales = ["","","","","","","","","","","","","","","","","","","","","","","",""]
+      horasTotales = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""]
       for (let k = 0; k < horas.length; k++) {
-        horasTotales[horas[k]] = 1
+        for (let l = horas[k]; l <= horasSalida[k]; l++) {
+          horasTotales[l] = 1
+        }
       }
 
       for (let k = 0; k < horasTotales.length; k++) {
-        cadena += `<td>${horasTotales[k]}</td>`
+        if (horasTotales[k] === 1 && band) {
+          cadena += `<td bgcolor="lightblue">${horasTotales[k]}</td>`
+          band = false
+        } else if (horasTotales[k] === 1) {
+          cadena += `<td bgcolor="lightblue"></td>`
+        } else {
+          cadena += `<td></td>`
+          band = true
+        }
       }
 
       cadena += `</tr>`
